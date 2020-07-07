@@ -1,4 +1,5 @@
 import 'package:MedBuzz/ui/size_config/config.dart';
+import 'package:MedBuzz/ui/widget/pop_up_menu.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -33,7 +34,9 @@ class AppointmentCard extends StatelessWidget {
                     Icons.more_vert,
                     size: Config.textSize(context, 5),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    PopUpMenu();
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,20 +1,10 @@
-class MenuItem {
-  String menuValue;
+import 'package:MedBuzz/core/database/appointmentData.dart';
 
-  MenuItem(this.menuValue);
-}
+DateTime selectedTime = AppointmentData().appointmentTime;
+DateTime now = DateTime.now();
 
-final List<MenuItem> menuitems = [
-  MenuItem("Edit"),
-  MenuItem("Delete"),
-];
-//class TodaysDate {
-//  String month = 'July';
-//  int dateno = 12;
-//  String day = 'Thurs';
-//
-//  TodaysDate(this.month, this.dateno, this.day);
-//}
+DateTime open = DateTime(
+    now.year, now.month, now.day, selectedTime.year, open.hour, open.minute);
 
 // enum _reminderState {Completed, Skipped, Upcoming}
 
