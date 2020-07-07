@@ -6,6 +6,8 @@ import 'dart:math';
 
 class MedicationData extends ChangeNotifier {
   static const String _boxName = "medicationReminderBox";
+  final String add = "Add Medication";
+  final String edit = "Edit Medication";
 
   final List drugTypes = [
     'Injection',
@@ -22,11 +24,12 @@ class MedicationData extends ChangeNotifier {
   int selectedIndex = 0;
   int dosage = 1;
   TimeOfDay firstTime = TimeOfDay.now();
-  TimeOfDay secondTime = TimeOfDay.now();
-  TimeOfDay thirdTime = TimeOfDay.now();
+  TimeOfDay secondTime;
+  TimeOfDay thirdTime;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
   String drugName;
+  String id;
 
   bool isEditing = false;
 
@@ -41,6 +44,24 @@ class MedicationData extends ChangeNotifier {
   ];
 
   List<MedicationReminder> medicationReminder = [];
+
+  List<int> convertTime(TimeOfDay time) {
+    List value;
+    value[0] = time.hour;
+    value[1] = time.minute;
+
+    return value;
+  }
+
+  Future<void> fetch() async {
+    getMedicationReminder();
+    notifyListeners();
+  }
+
+  TimeOfDay convertTimeBack(List<int> list) {
+    TimeOfDay value = TimeOfDay(hour: list[0], minute: list[1]);
+    return value;
+  }
 
   void onSelectedDrugImage(int index) {
     selectedIndex = index;
@@ -103,22 +124,25 @@ class MedicationData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateFirstTime(TimeOfDay selectedTime) {
+  TimeOfDay updateFirstTime(TimeOfDay selectedTime) {
     this.firstTime = selectedTime;
     notifyListeners();
+    return firstTime;
   }
 
-  void updateSecondTime(TimeOfDay selectedTime) {
+  TimeOfDay updateSecondTime(TimeOfDay selectedTime) {
     this.secondTime = selectedTime;
     notifyListeners();
+    return secondTime;
   }
 
-  void updateThirdTime(TimeOfDay selectedTime) {
+  TimeOfDay updateThirdTime(TimeOfDay selectedTime) {
     this.thirdTime = selectedTime;
     notifyListeners();
+    return thirdTime;
   }
 
-  void updateFrequency(String freq) {
+  String updateFrequency(String freq) {
     this.selectedFreq = freq;
     switch (freq) {
       case 'Once':
@@ -134,7 +158,15 @@ class MedicationData extends ChangeNotifier {
         this.thirdTime = TimeOfDay.now();
         break;
     }
+
     notifyListeners();
+    return selectedFreq;
+  }
+
+  String updateFreq(String freq) {
+    this.selectedFreq = freq;
+    notifyListeners();
+    return selectedFreq;
   }
 
   void updateSelectedIndex(int index) {
@@ -158,6 +190,18 @@ class MedicationData extends ChangeNotifier {
     drugName = name;
     notifyListeners();
     return drugName;
+  }
+
+  String updateId(String newId) {
+    id = newId;
+    notifyListeners();
+    return id;
+  }
+
+  int updateDosage(int newDosage) {
+    dosage = newDosage;
+    notifyListeners();
+    return dosage;
   }
 
   int diffFromPresent(DateTime end) {
@@ -201,12 +245,11 @@ class MedicationData extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addMedicationReminder(
-      String index, MedicationReminder medication) async {
+  Future<void> addMedicationReminder(MedicationReminder medication) async {
     var medicationReminderBox =
         await Hive.openBox<MedicationReminder>(_boxName);
 
-    await medicationReminderBox.put(index, medication);
+    await medicationReminderBox.put(medication.id, medication);
 
     medicationReminder = medicationReminderBox.values.toList();
     medicationReminderBox.close();
@@ -215,13 +258,13 @@ class MedicationData extends ChangeNotifier {
   }
 
   Future<void> editSchedule({MedicationReminder medication}) async {
-    String medicationKey = medication.index;
+    String medicationKey = medication.id;
     var medicationReminderBox =
         await Hive.openBox<MedicationReminder>(_boxName);
     await medicationReminderBox.put(medicationKey, medication);
 
     medicationReminder = medicationReminderBox.values.toList();
-    medicationReminderBox.close();
+    // medicationReminderBox.close();
 
     notifyListeners();
   }

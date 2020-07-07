@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:MedBuzz/ui/size_config/config.dart';
-import 'package:MedBuzz/ui/widget/confirm_dialog.dart';
 import 'package:MedBuzz/ui/views/schedule-appointment/all_scheduled_appointment_reminders.dart';
 
 class PopUpMenu extends StatefulWidget {
@@ -21,7 +20,7 @@ class _PopUpMenuState extends State<PopUpMenu> {
           var list = List<PopupMenuEntry<Object>>();
           list.add(
             PopupMenuItem(
-              child: InkWell(
+              child: GestureDetector(
                 child: Center(
                   child: Text(
                     'Edit',
@@ -39,7 +38,7 @@ class _PopUpMenuState extends State<PopUpMenu> {
           ));
           list.add(
             PopupMenuItem(
-              child: InkWell(
+              child: GestureDetector(
                 child: Center(
                   child: Text(
                     'Delete',
@@ -47,7 +46,7 @@ class _PopUpMenuState extends State<PopUpMenu> {
                   ),
                 ),
                 onTap: () {
-                  asyncConfirmDialog(context);
+                  ConfirmAction.Delete;
                 },
               ),
             ),
