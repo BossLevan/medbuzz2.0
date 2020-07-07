@@ -1,5 +1,6 @@
 import 'package:MedBuzz/ui/size_config/config.dart';
 import 'package:flutter/material.dart';
+import 'package:MedBuzz/ui/widget/pop_up_menu.dart';
 
 class AppointmentCard extends StatelessWidget {
   final double height;
@@ -28,12 +29,10 @@ class AppointmentCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                GestureDetector(
-                  child: Icon(
-                    Icons.more_vert,
-                    size: Config.textSize(context, 5),
-                  ),
-                  onTap: () {},
+                SizedBox.fromSize(
+                  size: Size(
+                      Config.xMargin(context, 5), Config.yMargin(context, 2)),
+                  child: PopUpMenu(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
