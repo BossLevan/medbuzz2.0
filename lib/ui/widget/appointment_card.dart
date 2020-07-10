@@ -73,7 +73,7 @@ class AppointmentCard extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             onTap: () {
-                              asyncConfirmDialog(context);
+                              //asyncConfirmDialog(context);
                             },
                           )),
                         ].toList();
